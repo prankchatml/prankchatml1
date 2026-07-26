@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- OpenGraph English -->
+    <title>MLBB Fake Chat Generator - English Version</title>
+    <meta name="description" content="Create fake enemy chat pranks for Mobile Legends.">
+    <meta property="og:title" content="MLBB Fake Chat Generator">
+    <meta property="og:description" content="Prank your friends with fake Mobile Legends chat. Click to try!">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630.png?text=MLBB+Chat+Prank+EN">
+
+    <!-- Tailwind & Style SAMA SEPERTI DI ATAS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        .ml-card { background-color: #1e293b; border: 1px solid #334155; }
+        .ml-input { background-color: #0f172a; border: 1px solid #475569; color: white; padding-right: 2.5rem; }
+        .ml-input:focus { border-color: #3b82f6; outline: none; }
+        .ml-btn { background: linear-gradient(135deg, #2563eb, #1d4ed8); transition: 0.3s; }
+        .ml-btn:hover { background: linear-gradient(135deg, #3b82f6, #2563eb); transform: translateY(-1px); }
+        .clear-btn { color: #94a3b8; transition: 0.2s; cursor: pointer; }
+        .clear-btn:hover { color: #ef4444; }
+        .result-box { background-color: #020617; border-left: 4px solid #ef4444; white-space: pre; overflow-x: auto; font-family: ui-monospace, monospace; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full ml-card rounded-xl p-6 shadow-2xl">
+        <!-- Tombol Switcher Ganti Ke index.html -->
+        <div class="flex justify-end mb-4 space-x-2">
+            <button onclick="location.href='index.html'" class="text-xs px-3 py-1.5 rounded bg-slate-700 hover:bg-slate-600 font-semibold uppercase">ID</button>
+            <button onclick="location.href='en.html'" class="text-xs px-3 py-1.5 rounded bg-blue-600 font-bold uppercase">EN</button>
+        </div>
+
+        <h1 class="text-3xl font-bold text-center mb-1 text-blue-400 italic">MLBB FAKE CHAT</h1>
+        <p id="sub-title" class="text-center text-sm text-slate-400 mb-8">Fake chat generator for enemy pranks</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+            <div class="relative">
+                <label id="lbl-prefix" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"></label>
+                <div class="relative"><input type="text" id="prefix" placeholder="Default: p" class="w-full p-2.5 rounded ml-input text-sm">
+                <button onclick="clearField('prefix')" class="absolute right-2 top-1/2 -translate-y-1/2 clear-btn px-2 text-lg">&times;</button></div>
+            </div>
+            <div class="relative">
+                <label id="lbl-nick" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"></label>
+                <div class="relative"><input type="text" id="nick" placeholder="Default: enemy_nick" class="w-full p-2.5 rounded ml-input text-sm">
+                <button onclick="clearField('nick')" class="absolute right-2 top-1/2 -translate-y-1/2 clear-btn px-2 text-lg">&times;</button></div>
+            </div>
+            <div class="relative">
+                <label id="lbl-hero" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"></label>
+                <div class="relative"><input type="text" id="hero" placeholder="Default: enemy_hero" class="w-full p-2.5 rounded ml-input text-sm">
+                <button onclick="clearField('hero')" class="absolute right-2 top-1/2 -translate-y-1/2 clear-btn px-2 text-lg">&times;</button></div>
+            </div>
+            <div class="relative">
+                <label id="lbl-msg" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"></label>
+                <div class="relative"><input type="text" id="msg" placeholder="Default: hmmm" class="w-full p-2.5 rounded ml-input text-sm">
+                <button onclick="clearField('msg')" class="absolute right-2 top-1/2 -translate-y-1/2 clear-btn px-2 text-lg">&times;</button></div>
+            </div>
+        </div>
+
+        <div class="mt-4 flex justify-end">
+            <button onclick="clearAllFields()" class="text-xs font-bold text-slate-400 hover:text-red-400 flex items-center">
+                <span id="btn-clear-all">Clear All Fields</span>
+            </button>
+        </div>
+
+        <div class="mt-8">
+            <label id="lbl-res" class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"></label>
+            <div id="result" class="result-box p-4 rounded-lg text-sm text-green-400"></div>
+            <button onclick="copyToClipboard()" id="btn-copy" class="w-full mt-4 py-3 rounded-lg font-bold ml-btn text-base shadow-lg uppercase">COPY CODE</button>
+        </div>
+
+        <div class="mt-8 space-y-2 text-[11px] text-slate-400 bg-slate-900/80 p-4 rounded-lg border border-slate-800 leading-relaxed">
+            <p id="note-1"></p><p id="note-2"></p><p id="note-3"></p>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'en'; 
+        const translations = {
+            en: {
+                sub: "Fake chat generator for enemy pranks", lblPrefix: "Your Prefix Character", lblNick: "Enemy Nickname", lblHero: "Enemy Hero", lblMsg: "Enemy Message", lblRes: "Result (Copy This Code):", btnClear: "Clear All Fields", btnCopy: "COPY CODE", tagAll: "All",
+                note1: "⚠️ Created for fun - use wisely.",
+                note2: "⚠️ Make sure to paste in (All) chat during the match.",
+                note3: "⚠️ If there is a 60-character limit warning, change your ML language to English.",
+                copied: "COPIED SUCCESSFULLY!"
+            }
+        };
+
+        const inputIds = ['prefix', 'nick', 'hero', 'msg'];
+        function updateUI() {
+            const lang = translations['en'];
+            document.getElementById('sub-title').innerText = lang.sub;
+            document.getElementById('lbl-prefix').innerText = lang.lblPrefix;
+            document.getElementById('lbl-nick').innerText = lang.lblNick;
+            document.getElementById('lbl-hero').innerText = lang.lblHero;
+            document.getElementById('lbl-msg').innerText = lang.lblMsg;
+            document.getElementById('lbl-res').innerText = lang.lblRes;
+            document.getElementById('btn-clear-all').innerText = lang.btnClear;
+            document.getElementById('btn-copy').innerText = lang.btnCopy;
+            document.getElementById('note-1').innerText = lang.note1;
+            document.getElementById('note-2').innerText = lang.note2;
+            document.getElementById('note-3').innerText = lang.note3;
+            generateCode();
+        }
+
+        function generateCode() {
+            const prefix = document.getElementById('prefix').value || "p";
+            const nick = document.getElementById('nick').value || "nickenemy";
+            const hero = document.getElementById('hero').value || "enemy hero";
+            const msg = document.getElementById('msg').value || "hmmm";
+            const finalString = `${prefix}\n[FF0000FF][All]${nick} (${hero}):[FFFFFFFF] ${msg}`;
+            document.getElementById('result').innerText = finalString;
+        }
+
+        function clearField(id) { document.getElementById(id).value = ""; generateCode(); }
+        function clearAllFields() { inputIds.forEach(id => document.getElementById(id).value = ""); generateCode(); }
+        function copyToClipboard() {
+            const text = document.getElementById('result').innerText;
+            const el = document.createElement('textarea'); el.value = text; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+            const btn = document.getElementById('btn-copy'); btn.innerText = "COPIED SUCCESSFULLY!";
+            setTimeout(() => { btn.innerText = "COPY CODE"; }, 2000);
+        }
+        inputIds.forEach(id => { document.getElementById(id).addEventListener('input', generateCode); });
+        updateUI();
+    </script>
+</body>
+</html>
